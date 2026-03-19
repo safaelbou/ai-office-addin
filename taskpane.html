@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redlyne</title>
+    <link rel="stylesheet" href="./taskpane.css" />
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">Microsoft Office Add-in</p>
+        <h1>Redlyne</h1>
+        <p class="subtitle">
+          Analysez les modifications Word et les sélections Excel avec OpenAI.
+        </p>
+        <div class="host-badge" id="hostBadge">Hôte détecté : chargement...</div>
+      </header>
+
+      <section class="panel">
+        <div class="actions">
+          <button id="analyzeWordBtn" class="primary-button" type="button">
+            Analyser les changements Word
+          </button>
+          <button id="analyzeExcelBtn" class="primary-button" type="button">
+            Analyser la sélection Excel
+          </button>
+        </div>
+
+        <div class="status-row">
+          <div id="spinner" class="spinner hidden" aria-hidden="true"></div>
+          <span id="statusText" class="status-text">Prêt.</span>
+        </div>
+
+        <section class="result-card">
+          <h2>Résultat</h2>
+          <pre id="result" class="result-content">
+Les résultats d'analyse apparaîtront ici.
+          </pre>
+        </section>
+      </section>
+    </main>
+
+    <script type="module" src="./taskpane.js"></script>
+  </body>
+</html>
