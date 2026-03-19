@@ -1,4 +1,9 @@
-import { OPENAI_API_KEY, OPENAI_MODEL, USE_MOCK } from "../../config.js";
+import {
+  API_BASE_URL,
+  EXCEL_ANALYSIS_PATH,
+  USE_MOCK,
+  WORD_ANALYSIS_PATH
+} from "../../config.js";
 
 const elements = {
   analyzeWordBtn: document.getElementById("analyzeWordBtn"),
@@ -74,7 +79,7 @@ async function handleWordAnalysis() {
       );
     }
 
-    setStatus("Envoi de l'analyse Word vers OpenAI...");
+    setStatus("Envoi de l'analyse Word vers GPT SNCF...");
 
     const prompt = `
 Tu es un assistant de relecture pour Microsoft Word.
@@ -93,7 +98,14 @@ Réponds en français avec les sections suivantes :
 3. Points importants à relire
 `;
 
-    const result = await askOpenAI(prompt, "word");
+    const result = await askBackend(
+      {
+        originalText: payload.originalText,
+        revisedText: payload.revisedText
+      },
+      WORD_ANALYSIS_PATH,
+      "word"
+    );
     setResult(result);
     setStatus("Analyse Word terminée.");
   });
@@ -119,7 +131,7 @@ async function handleExcelAnalysis() {
       throw new Error("La sélection Excel est vide.");
     }
 
-    setStatus("Envoi de l'analyse Excel vers OpenAI...");
+    setStatus("Envoi de l'analyse Excel vers GPT SNCF...");
 
     const prompt = `
 Tu es un analyste de données pour Microsoft Excel.
@@ -135,56 +147,42 @@ Réponds en français avec les sections suivantes :
 3. Résumé en 3 points
 `;
 
-    const result = await askOpenAI(prompt, "excel");
+    const result = await askBackend(
+      {
+        address: payload.address,
+        values: payload.values
+      },
+      EXCEL_ANALYSIS_PATH,
+      "excel"
+    );
     setResult(result);
     setStatus("Analyse Excel terminée.");
   });
 }
 
-async function askOpenAI(prompt, scenario) {
+async function askBackend(payload, path, scenario) {
   if (USE_MOCK) {
     return buildMockResponse(scenario);
   }
 
-  if (!OPENAI_API_KEY || OPENAI_API_KEY === "YOUR_OPENAI_API_KEY_HERE") {
-    throw new Error(
-      "La clé API OpenAI n'est pas configurée dans config.js et le mode mock est désactivé."
-    );
-  }
-
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${OPENAI_API_KEY}`
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      model: OPENAI_MODEL,
-      temperature: 0.2,
-      messages: [
-        {
-          role: "system",
-          content:
-            "Tu rédiges des analyses claires, structurées et professionnelles en français."
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ]
-    })
+    body: JSON.stringify(payload)
   });
 
   if (!response.ok) {
     const errorText = await safeReadError(response);
-    throw new Error(`Erreur OpenAI (${response.status}) : ${errorText}`);
+    throw new Error(`Erreur backend (${response.status}) : ${errorText}`);
   }
 
   const data = await response.json();
-  const content = data?.choices?.[0]?.message?.content?.trim();
+  const content = data?.result?.trim();
 
   if (!content) {
-    throw new Error("La réponse OpenAI ne contient aucun contenu exploitable.");
+    throw new Error("La réponse du backend ne contient aucun contenu exploitable.");
   }
 
   return content;

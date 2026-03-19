@@ -5,12 +5,12 @@
   xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
   xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
   xsi:type="TaskPaneApp">
-  <Id>9f4b68f0-7b0c-4b41-9c4e-7f4ed5e4a101</Id>
+  <Id>2c55d7d3-f8e8-49a4-8f89-4db2de5f1c11</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Redlyne</ProviderName>
+  <ProviderName>Office AI Tools</ProviderName>
   <DefaultLocale>fr-FR</DefaultLocale>
-  <DisplayName DefaultValue="Redlyne" />
-  <Description DefaultValue="Analyse les révisions Word et les données Excel avec OpenAI." />
+  <DisplayName DefaultValue="Analyseur Word" />
+  <Description DefaultValue="Analyse les révisions suivies dans Word avec OpenAI." />
   <IconUrl DefaultValue="https://safaelbou.github.io/redlyne/icon-32.png" />
   <HighResolutionIconUrl DefaultValue="https://safaelbou.github.io/redlyne/icon-80.png" />
   <SupportUrl DefaultValue="https://safaelbou.github.io/redlyne/taskpane.html" />
@@ -20,7 +20,6 @@
   </AppDomains>
   <Hosts>
     <Host Name="Document" />
-    <Host Name="Workbook" />
   </Hosts>
   <DefaultSettings>
     <SourceLocation DefaultValue="https://safaelbou.github.io/redlyne/taskpane.html" />
@@ -40,14 +39,14 @@
           <FunctionFile resid="Taskpane.Url" />
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
             <OfficeTab id="TabHome">
-              <Group id="WordExcelAiGroup">
+              <Group id="WordAiGroup">
                 <Label resid="Group.Label" />
                 <Icon>
                   <bt:Image size="16" resid="Icon.16x16" />
                   <bt:Image size="32" resid="Icon.32x32" />
                   <bt:Image size="80" resid="Icon.80x80" />
                 </Icon>
-                <Control xsi:type="Button" id="OpenTaskpaneButton">
+                <Control xsi:type="Button" id="OpenTaskpaneButtonWord">
                   <Label resid="TaskpaneButton.Label" />
                   <Supertip>
                     <Title resid="TaskpaneButton.Label" />
@@ -59,45 +58,7 @@
                     <bt:Image size="80" resid="Icon.80x80" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>ButtonId1</TaskpaneId>
-                    <SourceLocation resid="Taskpane.Url" />
-                  </Action>
-                </Control>
-              </Group>
-            </OfficeTab>
-          </ExtensionPoint>
-        </DesktopFormFactor>
-      </Host>
-      <Host xsi:type="ov:Workbook">
-        <DesktopFormFactor>
-          <GetStarted>
-            <Title resid="GetStarted.Title" />
-            <Description resid="GetStarted.Description" />
-            <LearnMoreUrl resid="GetStarted.LearnMoreUrl" />
-          </GetStarted>
-          <FunctionFile resid="Taskpane.Url" />
-          <ExtensionPoint xsi:type="PrimaryCommandSurface">
-            <OfficeTab id="TabHome">
-              <Group id="WordExcelAiGroupWorkbook">
-                <Label resid="Group.Label" />
-                <Icon>
-                  <bt:Image size="16" resid="Icon.16x16" />
-                  <bt:Image size="32" resid="Icon.32x32" />
-                  <bt:Image size="80" resid="Icon.80x80" />
-                </Icon>
-                <Control xsi:type="Button" id="OpenTaskpaneButtonWorkbook">
-                  <Label resid="TaskpaneButton.Label" />
-                  <Supertip>
-                    <Title resid="TaskpaneButton.Label" />
-                    <Description resid="TaskpaneButton.Tooltip" />
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="Icon.16x16" />
-                    <bt:Image size="32" resid="Icon.32x32" />
-                    <bt:Image size="80" resid="Icon.80x80" />
-                  </Icon>
-                  <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <TaskpaneId>WordTaskpane</TaskpaneId>
                     <SourceLocation resid="Taskpane.Url" />
                   </Action>
                 </Control>
@@ -118,13 +79,13 @@
         <bt:Url id="Taskpane.Url" DefaultValue="https://safaelbou.github.io/redlyne/taskpane.html" />
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="GetStarted.Title" DefaultValue="Redlyne" />
-        <bt:String id="Group.Label" DefaultValue="Redlyne" />
+        <bt:String id="GetStarted.Title" DefaultValue="Analyseur Word" />
+        <bt:String id="Group.Label" DefaultValue="Outils IA" />
         <bt:String id="TaskpaneButton.Label" DefaultValue="Ouvrir l'analyseur" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="GetStarted.Description" DefaultValue="Utilisez le volet pour analyser les révisions Word ou les données Excel." />
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Ouvre le volet d'analyse OpenAI pour Word et Excel." />
+        <bt:String id="GetStarted.Description" DefaultValue="Utilisez le volet pour analyser les révisions suivies dans Word." />
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Ouvre le volet d'analyse Word avec OpenAI." />
       </bt:LongStrings>
     </Resources>
   </ov:VersionOverrides>

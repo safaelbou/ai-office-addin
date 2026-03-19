@@ -9,6 +9,8 @@ const docsDir = path.join(rootDir, "docs");
 
 const filesToCopy = [
   "manifest.xml",
+  "manifest-word.xml",
+  "manifest-excel.xml",
   "config.js",
   "taskpane.html",
   "taskpane.css",

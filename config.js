@@ -1,9 +1,11 @@
-// Configuration centralisée de l'application.
-// Remplacez la valeur ci-dessous par votre vraie clé API OpenAI.
-export const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE";
+// Configuration centralisée côté navigateur.
+// La clé API ne doit plus être stockée ici.
+// Le front appelle désormais un backend proxy.
+export const API_BASE_URL = "https://localhost:8787";
 
 // Activez ce mode à true pour tester rapidement sans appeler l'API.
 export const USE_MOCK = true;
 
-// Le modèle demandé dans le cahier des charges.
-export const OPENAI_MODEL = "gpt-4o";
+// Routes du backend proxy.
+export const WORD_ANALYSIS_PATH = "/api/analyze-word";
+export const EXCEL_ANALYSIS_PATH = "/api/analyze-excel";

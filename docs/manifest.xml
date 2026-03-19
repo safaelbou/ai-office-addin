@@ -15,8 +15,8 @@
   <HighResolutionIconUrl DefaultValue="https://safaelbou.github.io/redlyne/icon-80.png" />
   <SupportUrl DefaultValue="https://safaelbou.github.io/redlyne/taskpane.html" />
   <AppDomains>
-    <AppDomain>https://api.openai.com</AppDomain>
     <AppDomain>https://safaelbou.github.io</AppDomain>
+    <AppDomain>https://localhost:8787</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Document" />

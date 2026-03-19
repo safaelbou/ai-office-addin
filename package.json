@@ -2,10 +2,16 @@
   "name": "redlyne",
   "version": "1.0.0",
   "private": true,
-  "description": "Redlyne - Add-in Office Word/Excel avec Office.js et OpenAI.",
+  "description": "POC Office add-in Word/Excel avec proxy backend GPT SNCF.",
   "scripts": {
     "build": "node scripts/build-docs.js",
+    "start:api": "node server/server.js",
     "validate": "office-addin-manifest validate manifest.xml"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "office-addin-manifest": "^1.12.5"

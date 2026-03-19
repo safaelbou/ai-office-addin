@@ -1,24 +1,62 @@
 # Redlyne
 
-Redlyne est un add-in Microsoft Office en HTML/CSS/JavaScript, sans framework, conçu pour être hébergé statiquement sur GitHub Pages.
+Ce POC combine :
 
-Le projet fonctionne entièrement côté client :
+- un frontend statique publié sur GitHub Pages
+- un backend proxy Node.js local qui protège la clé GPT SNCF
 
-- pas de backend
-- pas de serveur Node.js en production
-- la clé OpenAI est stockée dans [config.js](./config.js)
+La clé GPT SNCF n'est plus stockée dans [config.js](./config.js).
 
-## 1. Préparer le projet
+## 1. Installer les dépendances
 
-Installez les dépendances puis générez le dossier `docs` :
+Installez les dépendances :
 
 ```powershell
 cd c:\Users\PSEB01261\ai-office-addin
 npm install
+```
+
+## 2. Configurer le backend local
+
+Créez un fichier `.env` à partir de [\.env.example](./.env.example).
+
+Exemple :
+
+```text
+SGPT_API_KEY=votre_cle_gpt_sncf
+PORT=8787
+FRONTEND_ORIGIN=https://safaelbou.github.io
+```
+
+## 3. Démarrer le backend proxy
+
+Dans PowerShell :
+
+```powershell
+npm run start:api
+```
+
+Le backend écoute par défaut sur :
+
+```text
+https://localhost:8787
+```
+
+Vous pouvez tester sa disponibilité via :
+
+```text
+https://localhost:8787/health
+```
+
+## 4. Générer les fichiers statiques
+
+Quand le frontend change, regénérez le dossier `docs` :
+
+```powershell
 npm run build
 ```
 
-Le script `build` copie les fichiers nécessaires dans [docs](./docs) pour GitHub Pages :
+Le script `build` copie les fichiers nécessaires dans [docs](./docs).
 
 - [docs/manifest.xml](./docs/manifest.xml)
 - [docs/config.js](./docs/config.js)
@@ -28,31 +66,7 @@ Le script `build` copie les fichiers nécessaires dans [docs](./docs) pour GitHu
 
 Les icônes sont également copiées dans `docs/assets/`.
 
-## 2. Remplacer `tonnom` par votre vrai nom GitHub
-
-Avant de publier, remplacez `tonnom` par votre vrai identifiant GitHub dans [manifest.xml](./manifest.xml).
-
-Exemple :
-
-```text
-https://tonnom.github.io/redlyne
-```
-
-devient :
-
-```text
-https://monlogin.github.io/redlyne
-```
-
-Après cette modification, relancez :
-
-```powershell
-npm run build
-```
-
-pour recopier le manifest mis à jour dans `docs/`.
-
-## 3. Pousser le projet sur GitHub
+## 5. Pousser le projet sur GitHub
 
 Si le dépôt n'existe pas encore :
 
@@ -73,7 +87,7 @@ git commit -m "Prepare Redlyne for GitHub Pages"
 git push
 ```
 
-## 4. Activer GitHub Pages depuis le dossier `/docs`
+## 6. Activer GitHub Pages
 
 Dans GitHub :
 
@@ -91,46 +105,48 @@ GitHub publiera alors le site sur une URL de type :
 https://monlogin.github.io/redlyne
 ```
 
-## 5. Vérifier l'URL publiée
+## 7. Vérifier l'URL publiée
 
 Quand GitHub Pages est actif, ouvrez :
 
 ```text
-https://monlogin.github.io/redlyne/src/taskpane/taskpane.html
+https://safaelbou.github.io/redlyne/taskpane.html
 ```
 
 Si la page s'affiche correctement, le task pane est bien publié.
 
-## 6. Charger le manifest dans Word Online
+## 8. Charger le manifest dans Word Online
 
 1. Ouvrez Word Online.
 2. Ouvrez un document.
 3. Cliquez sur `Insertion`.
 4. Cliquez sur `Compléments`.
 5. Cliquez sur `Charger un complément`.
-6. Sélectionnez [docs/manifest.xml](./docs/manifest.xml) ou [manifest.xml](./manifest.xml) si vous avez déjà remplacé les URLs.
-7. Ouvrez ensuite le complément `Redlyne`.
+6. Sélectionnez [manifest-word.xml](./manifest-word.xml).
+7. Ouvrez ensuite le complément.
 
-## 7. Charger le manifest dans Excel Online
+## 9. Charger le manifest dans Excel Online
 
 1. Ouvrez Excel Online.
 2. Ouvrez un classeur.
 3. Cliquez sur `Insertion`.
 4. Cliquez sur `Compléments`.
 5. Cliquez sur `Charger un complément`.
-6. Sélectionnez [docs/manifest.xml](./docs/manifest.xml) ou [manifest.xml](./manifest.xml).
-7. Ouvrez ensuite le complément `Redlyne`.
+6. Sélectionnez [manifest-excel.xml](./manifest-excel.xml).
+7. Ouvrez ensuite le complément.
 
-## 8. Validation du manifest
+## 10. Validation des manifests
 
-Vous pouvez vérifier le manifest avec :
+Vous pouvez vérifier les manifests avec :
 
 ```powershell
-npm run validate
+npx office-addin-manifest validate manifest-word.xml
+npx office-addin-manifest validate manifest-excel.xml
 ```
 
 ## Remarques
 
-- Le chargement du complément est entièrement client-side.
-- Si vous utilisez de vraies requêtes OpenAI depuis le navigateur, la clé API dans `config.js` sera visible côté client.
-- Pour un usage réel en production, une architecture avec backend est préférable. Ici, la configuration suit votre contrainte explicite : aucun backend.
+- Le frontend est public sur GitHub Pages.
+- La clé GPT SNCF reste côté serveur local.
+- Pour que l'analyse fonctionne, le backend local doit être lancé pendant vos tests.
+- Comme le frontend est chargé en HTTPS depuis GitHub Pages, le backend local doit lui aussi être exposé en HTTPS.
