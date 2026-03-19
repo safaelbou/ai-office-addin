@@ -11,9 +11,9 @@
   <DefaultLocale>fr-FR</DefaultLocale>
   <DisplayName DefaultValue="Redlyne" />
   <Description DefaultValue="Analyse les révisions Word et les données Excel avec OpenAI." />
-  <IconUrl DefaultValue="https://safaelbou.github.io/redlyne/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://safaelbou.github.io/redlyne/icon-80.png" />
-  <SupportUrl DefaultValue="https://safaelbou.github.io/redlyne/taskpane.html" />
+  <IconUrl DefaultValue="https://safaelbou.github.io/ai-office-addin/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://safaelbou.github.io/ai-office-addin/icon-80.png" />
+  <SupportUrl DefaultValue="https://safaelbou.github.io/ai-office-addin/taskpane.html" />
   <AppDomains>
     <AppDomain>https://safaelbou.github.io</AppDomain>
     <AppDomain>https://localhost:8787</AppDomain>
@@ -23,7 +23,7 @@
     <Host Name="Workbook" />
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://safaelbou.github.io/redlyne/taskpane.html" />
+    <SourceLocation DefaultValue="https://safaelbou.github.io/ai-office-addin/taskpane.html" />
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
   <ov:VersionOverrides
@@ -109,13 +109,13 @@
     </Hosts>
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://safaelbou.github.io/redlyne/icon-16.png" />
-        <bt:Image id="Icon.32x32" DefaultValue="https://safaelbou.github.io/redlyne/icon-32.png" />
-        <bt:Image id="Icon.80x80" DefaultValue="https://safaelbou.github.io/redlyne/icon-80.png" />
+        <bt:Image id="Icon.16x16" DefaultValue="https://safaelbou.github.io/ai-office-addin/icon-16.png" />
+        <bt:Image id="Icon.32x32" DefaultValue="https://safaelbou.github.io/ai-office-addin/icon-32.png" />
+        <bt:Image id="Icon.80x80" DefaultValue="https://safaelbou.github.io/ai-office-addin/icon-80.png" />
       </bt:Images>
       <bt:Urls>
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://learn.microsoft.com/office/dev/add-ins/" />
-        <bt:Url id="Taskpane.Url" DefaultValue="https://safaelbou.github.io/redlyne/taskpane.html" />
+        <bt:Url id="Taskpane.Url" DefaultValue="https://safaelbou.github.io/ai-office-addin/taskpane.html" />
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="Redlyne" />
