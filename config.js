@@ -9,3 +9,4 @@ export const USE_MOCK = true;
 // Routes du backend proxy.
 export const WORD_ANALYSIS_PATH = "/api/analyze-word";
 export const EXCEL_ANALYSIS_PATH = "/api/analyze-excel";
+export const WORD_SUMMARY_PATH = "/api/summarize-word-selection";

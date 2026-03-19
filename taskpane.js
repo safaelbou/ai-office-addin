@@ -2,11 +2,13 @@ import {
   API_BASE_URL,
   EXCEL_ANALYSIS_PATH,
   USE_MOCK,
-  WORD_ANALYSIS_PATH
+  WORD_ANALYSIS_PATH,
+  WORD_SUMMARY_PATH
 } from "./config.js";
 
 const elements = {
   analyzeWordBtn: document.getElementById("analyzeWordBtn"),
+  summarizeSelectionBtn: document.getElementById("summarizeSelectionBtn"),
   analyzeExcelBtn: document.getElementById("analyzeExcelBtn"),
   hostBadge: document.getElementById("hostBadge"),
   result: document.getElementById("result"),
@@ -32,6 +34,7 @@ function initializeAddin(info) {
 
 function bindEvents() {
   elements.analyzeWordBtn.addEventListener("click", handleWordAnalysis);
+  elements.summarizeSelectionBtn.addEventListener("click", handleWordSelectionSummary);
   elements.analyzeExcelBtn.addEventListener("click", handleExcelAnalysis);
 }
 
@@ -41,6 +44,7 @@ function updateHostUI(host) {
 
   elements.hostBadge.textContent = `Hôte détecté : ${formatHostName(host)}`;
   elements.analyzeWordBtn.classList.toggle("hidden", !isWord);
+  elements.summarizeSelectionBtn.classList.toggle("hidden", !isWord);
   elements.analyzeExcelBtn.classList.toggle("hidden", !isExcel);
 }
 
@@ -160,6 +164,39 @@ Réponds en français avec les sections suivantes :
   });
 }
 
+async function handleWordSelectionSummary() {
+  await runWithUiState(async () => {
+    setStatus("Lecture de la sélection active dans Word...");
+
+    const payload = await Word.run(async (context) => {
+      const selection = context.document.getSelection();
+      selection.load("text");
+
+      await context.sync();
+
+      return {
+        selectedText: (selection.text || "").trim()
+      };
+    });
+
+    if (!payload.selectedText) {
+      throw new Error("Aucun texte sélectionné dans Word.");
+    }
+
+    setStatus("Envoi du résumé de sélection vers GPT SNCF...");
+
+    const result = await askBackend(
+      {
+        selectedText: payload.selectedText
+      },
+      WORD_SUMMARY_PATH,
+      "word-summary"
+    );
+    setResult(result);
+    setStatus("Résumé de sélection terminé.");
+  });
+}
+
 async function askBackend(payload, path, scenario) {
   if (USE_MOCK) {
     return buildMockResponse(scenario);
@@ -206,6 +243,15 @@ function buildMockResponse(scenario) {
 - Confirmer que l'ordre des sections reste cohérent avec l'objectif du document.`;
   }
 
+  if (scenario === "word-summary") {
+    return `Mode mock activé.
+
+Résumé de la sélection
+- Le passage présente l'objectif principal du document et les décisions clés.
+- Les points de vigilance concernent surtout les délais, la coordination et la qualité.
+- Une action de relecture complémentaire semble utile avant validation finale.`;
+  }
+
   return `Mode mock activé.
 
 1. Insights clés
@@ -241,6 +287,7 @@ function toggleLoading(isLoading) {
   elements.spinner.classList.toggle("hidden", !isLoading);
   elements.spinner.setAttribute("aria-hidden", String(!isLoading));
   elements.analyzeWordBtn.disabled = isLoading;
+  elements.summarizeSelectionBtn.disabled = isLoading;
   elements.analyzeExcelBtn.disabled = isLoading;
 }
 

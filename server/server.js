@@ -94,6 +94,36 @@ Réponds en français avec les sections suivantes :
   }
 });
 
+app.post("/api/summarize-word-selection", async (req, res) => {
+  const { selectedText = "" } = req.body || {};
+
+  if (!selectedText.trim()) {
+    return res.status(400).json({
+      error: "Le texte sélectionné est manquant."
+    });
+  }
+
+  const prompt = `
+Tu es un assistant de synthèse pour Microsoft Word.
+
+Résume en français le texte sélectionné ci-dessous.
+Le résumé doit être :
+1. Clair
+2. Concis
+3. Structuré en 3 à 5 points
+
+Texte sélectionné :
+"""${selectedText}"""
+`;
+
+  try {
+    const result = await callSgpt(prompt);
+    return res.json({ result });
+  } catch (error) {
+    return handleServerError(res, error);
+  }
+});
+
 startServer();
 
 async function callSgpt(prompt) {
